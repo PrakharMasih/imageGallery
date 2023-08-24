@@ -19,11 +19,12 @@ function Photo() {
 
     return (
         <>
-            <div className="container text-center">
+            <h3>Welcome, {localStorage.getItem('user')} </h3>
+            <div className="container text-center" >
                 <h1>Photos</h1>
                 <div className="row row-cols-3" style={{ justifyContent: "space-between" }}  >
                     {
-                        photos ?
+                        photos.length>0 ?
                             photos.map((item) => {
                                 return (
                                     <>

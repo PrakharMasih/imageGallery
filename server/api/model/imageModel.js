@@ -15,6 +15,10 @@ const imageSchema = mongoose.Schema({
     },
     imageUrl: {
         type: String
+    },
+    views: {
+        type: Number,
+        default: 1
     }
 },
     {

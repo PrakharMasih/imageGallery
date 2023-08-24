@@ -1,4 +1,3 @@
-import Photo from "./features/photos/Photo"
 import Signup from "./pages/Signup"
 import Login from "./pages/login"
 import Navbar from "./pages/Navbar"
@@ -6,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import PhotoById from "./pages/PhotoById";
 import PrivateComponent from './pages/PrivateComponent'
 import Upload from "./pages/Upload";
+import Home from "./pages/Home";
 
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route element={<PrivateComponent />} >
-          <Route path='/' element={<Photo />} />
+          <Route path='/' element={<Home />} />
           <Route path="/:Id" element={<PhotoById />} />
           <Route path="/upload" element={<Upload />} />
         </Route>

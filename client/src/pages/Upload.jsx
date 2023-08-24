@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function Upload() {
+    const navigate = useNavigate();
     const [values, setValues] = useState({
         title: '',
         description: ''
@@ -44,18 +46,24 @@ function Upload() {
         try {
             const result = await fetch('http://localhost:8000/api/posts', {
                 method: 'POST',
+                headers: new Headers({
+                    'Authorization': localStorage.getItem('auth')
+                }),
                 body: formData,
             });
-
-            const response = await result.json();
+            
             if (result.status == 201) {
-                alert('Created Success');
                 setValues({
                     title: '',
                     description: '',
                 });
                 setImages([]);
                 setImageUrls([]);
+                alert('Created Success');
+            }
+            if(result.status == 401){
+                localStorage.clear();
+                navigate('/login');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -72,10 +80,10 @@ function Upload() {
                     </div>
                     <div className="form-group m-3">
                         <label htmlFor="formGroupExampleInput2">Description</label>
-                        <textarea name="description" cols="40" className="form-control" rows="4" value={values.description} onChange={handleInputChange} />
+                        <textarea id='formGroupExampleInput2' name="description" cols="40" className="form-control" rows="4" value={values.description} onChange={handleInputChange} />
                     </div>
                     <div className="form-group mb-3">
-                        <label htmlFor="exampleFormControlFile1 pl-3 ">File input</label>
+                        <label htmlFor="exampleFormControlFile1" className='p-3' >File input</label>
                         <input type="file" className="form-control-file" id="exampleFormControlFile1" accept='image/*' onChange={onImageChange} />
                     </div>
                     <button type="submit" className="btn btn-primary" >Submit</button>
@@ -85,7 +93,7 @@ function Upload() {
                         <div className="card" style={{ width: "18rem", alignItems: "center" }}>
                             <img src={ImageUrls} className="card-img-top" alt="..." />
                         </div> :
-                    <></>
+                        <></>
                 }
 
             </div>

@@ -5,14 +5,17 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-const imageController = require('../controller/imageController')
+const imageController = require('../controller/imageController');
+const checkAuth = require('../middleware/checkAuth');
 
 
-router.get('/', imageController.getAllImage );
+router.get('/',checkAuth, imageController.getAllImage );
 
-router.post('/', upload.single('image'), imageController.createImage );
+router.get('/:id', checkAuth, imageController.imageViews );
 
-router.delete('/:id', imageController.deleteImage );
+router.post('/',checkAuth, upload.single('image'), imageController.createImage );
+
+router.delete('/:id',checkAuth, imageController.deleteImage );
 
 
 module.exports = router;

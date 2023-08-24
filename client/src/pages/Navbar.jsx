@@ -6,12 +6,6 @@ function Navbar() {
     const auth = localStorage.getItem('user');
 
     const logout = () => {
-        const apilogout = async() => {
-            let result = await fetch('http://localhost:8000/api/auth/logout');
-            result = await result.json();
-            console.log(result);
-        }
-        apilogout();
         localStorage.clear();
         navigate('/signup');
     }

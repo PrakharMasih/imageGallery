@@ -8,14 +8,6 @@ function Login() {
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
 
-    const mystyle = {
-        "backgroundImage": " url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp') "
-    }
-
-    const mystyle2 = {
-        "borderRadius": " 15px"
-    }
-
     useEffect(() => {
         const auth = localStorage.getItem('user');
         if (auth) {
@@ -25,6 +17,12 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if(username == '' || password == ''){
+            alert('All fields are required');
+            return;
+        }
+
         let result = await fetch('http://localhost:8000/api/auth/login', {
             method: "post",
             body: JSON.stringify({ username, password }),
@@ -32,27 +30,26 @@ function Login() {
                 'Content-Type': 'application/json'
             }
         });
-        // const data = await result.json();
-        // console.log(data)
+        const data = await result.json();
         if (result.status === 200 ) {
             localStorage.setItem('user', username);
+            localStorage.setItem('auth', 'bearer'+' '+ data.token );
             navigate('/');
         }
         else {
             alert("User not found");
         }
-        setUsername('');
         setPass('');
     }
 
     return (
         <section className="vh-100 bg-image mt-0"
-            style={mystyle}>
+            style={{backgroundImage:" url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp') " }}>
             <div className="mask d-flex align-items-center h-100 gradient-custom-3" id="newclass">
                 <div className="container h-100">
                     <div className="row d-flex justify-content-center align-items-center h-100">
                         <div className="col-12 col-md-9 col-lg-7 col-xl-6">
-                            <div className="card" style={mystyle2}>
+                            <div className="card" style={{borderRadius:" 15px" }}>
                                 <div className="card-body p-5">
                                     <h3 className="text-uppercase text-center mb-2">Login to account</h3>
 

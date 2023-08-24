@@ -16,7 +16,7 @@ const s3 = new S3Client({
 
 exports.getAllImage = async (req, res) => {
     const response = await Image.find();
-    if(!response){
+    if(response.length <= 0 ){
         return res.status(404).json({ message:"No data present" });
     }
 
@@ -56,6 +56,13 @@ exports.createImage = async (req, res) => {
     imageDB.save().then(
         result => res.status(201).json({ message: 'success' })
     ).catch(err => res.json({ error: err }));
+}
+
+exports.imageViews = async (req, res) => {
+    const data = await Image.findById(req.params.id);
+    const updateview = data.views +1;
+    const image = await Image.findByIdAndUpdate( req.params.id , {views: updateview } );
+    res.status(200).json(image);
 }
 
 exports.deleteImage = async (req, res) => {
